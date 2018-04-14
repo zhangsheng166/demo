@@ -63,8 +63,14 @@ rollback_list() {
 }
 
 rollback_pro() {
-	rm -f $www_dir/demo
-	ln -s /tmp/$1 $www_dir/demo
+	if [ ! -d "/tmp/$1" ];then
+		echo "rollback$1  ------------failed !"
+		echo "$1 not exits,you can rollback_list to make sure"
+	else
+		rm -f $www_dir/demo
+		ln -s /tmp/$1 $www_dir/demo
+		echo "rollback$1  ----------------Ok"
+	fi
 }
 
 main() {
@@ -78,7 +84,7 @@ case $1 in
 		test_pro;
 		;;
 	rollback-list)
-		rollback_lsit;	
+		rollback_list;	
 		;;
 	rollback-pro)
 		rollback_pro $2;
