@@ -1,11 +1,13 @@
 #/bin/bsah
+#author nuanxiansheng
+#date 201804013
+#just for a github test
 #DATE/TIME
 CDATE=$(date "+%Y-%m-%d")
 CTIME=$(date "+%Y-%m-%d-%H-%M")
 
-
 #shell
-www_dir="var/www/html"
+www_dir="/var/www/html"
 code_dir="/data/servers/deploy/code/demo"
 tar_dir="/data/servers/deploy/tar"
 config_dir="/data/servers/deploy/config"
@@ -34,7 +36,7 @@ config_pro() {
 tar_pro() {
 	echo "tar  begin.........."
 	cd $tmp_dir && tar -czf pro_demo_"$tar_ver".tar.gz pro_demo_"$tar_ver"
-	echo "pro_demo_"$tar_ver".tar.gz      end ..............."			
+	echo "pro_demo_"$tar_ver".tar.gz    tar  end ..............."			
 }
 
 scp_pro() {
