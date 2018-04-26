@@ -1,0 +1,28 @@
+gogs install
+this is a gogs install test
+
+#####################################################
+
+wget https://dl.gogs.io/0.11.43/gogs_0.11.43_linux_amd64.tar.gz
+tar -xf gogs_0.11.43_linux_amd64.tar.gz -C /data/servers/
+useradd git 
+groupadd git
+mkdir -pv /data/servers/gogs-repositories
+chown -R git:git gogs
+chown -R git:git gogs-repositories/     ##这个是gogs仓库的目录
+
+****创建mysql的gogs数据库****
+create database gogs;
+grant all on gogs.* to gogs@IP identified by "passwd123";
+flush privileges;
+
+要以git 普通用户启动gogs
+su git
+cd /data/servers/gogs/
+./gogs web
+
+
+http:IP:3000  (记得开放安全组3000)
+
+**备注：** 在install页面上 管理员的账号不能为admin ，不然会报错
+关于备份： 在另一台机器上安装gogs 然后把 /data/servers/gogs-repositories ka拷过去就好了。
