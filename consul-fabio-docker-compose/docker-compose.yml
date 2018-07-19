@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+  consul_server_1:
+    image: "consul:latest"
+    container_name: "consul_server_1"
+    environment:
+      CONSUL_LOCAL_CONFIG: '{"leave_on_terminate": true}'
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.3
+    command: "agent -server -bind=172.30.0.3 -client=172.30.0.3 -retry-join=172.30.0.2"
+
+  consul_server_2:
+    image: "consul:latest"
+    container_name: "consul_server_2"
+    ports:
+      - "8600:8600"
+      - "8500:8500"
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.4
+    command: "agent -server -bind=172.30.0.4 -client=172.30.0.4 -retry-join=172.30.0.3 -ui"
+
+  consul_server_3:
+    image: "consul:latest"
+    container_name: "consul_server_3"
+    environment:
+      CONSUL_LOCAL_CONFIG: '{"leave_on_terminate": true}'
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.5
+    command: "agent -server -bind=172.30.0.5 -client=172.30.0.5 -retry-join=172.30.0.4 -bootstrap-expect=3"
+
+  fabio:
+    image: "docker.io/magiconair/fabio:1.5.2-go1.9"
+    ports:
+      - "9998:9998"
+      - "9999:9999"
+    networks:
+      app_net:
+        ipv4_address: 172.30.0.6
+    volumes:
+      - /data/servers/docker/docker-compose-consul/faibo/fabio.properties/fabio.properties:/etc/fabio/fabio.properties
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.30.0.0/24
